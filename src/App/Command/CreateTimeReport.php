@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use App\AppCore;
+use App\Common\ExceptionHandler;
+use App\TimeReport\Report;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -10,6 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Throwable;
 use Webmozart\Assert\Assert;
 
 #[AsCommand(name: 'app:create-timereport', aliases: ['tr'])]
@@ -48,9 +52,20 @@ class CreateTimeReport extends Command
             return Command::INVALID;
         }
 
-        //@todo call and out
+        $report = AppCore::i()->get(Report::class);
+        try {
 
-        return Command::SUCCESS;
+            $reportFile = $report->buildReport($reportDT);
+
+            $output->writeln(["Сгенерирован файл отчета:", $reportFile->getPathname()]);
+
+            return Command::SUCCESS;
+
+        } catch (Throwable $e) {
+            ExceptionHandler::defaultHandler($e);
+            return Command::FAILURE;
+        }
+
     }
 
 }
