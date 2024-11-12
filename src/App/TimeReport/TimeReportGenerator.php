@@ -41,11 +41,11 @@ class TimeReportGenerator
         $reportRows = new ReportRowsBuilder($projects, $tasks);
         $reportRowsOfMonth = $reportRows->buildReportRowsOfMonth($dt);
 
-        $nowStamp = date('Y-m-d_His');
+        $nowStamp = date('Ymd_His');
         $reportFileDir = $this->storage->usedir("timereports_" . date('Y'));
-        $reportFilename = "weeek_timereport_{$dt->format("Y-m")}@$nowStamp.csv";
+        $reportFilename = "weeek_timereport_of_{$dt->format("Y-m")}___@_$nowStamp.xlsx";
         $reportFilepath = $reportFileDir->getPathname() . DIRECTORY_SEPARATOR . $reportFilename;
 
-        return $this->excelGenerator->renderToFileCSV($dt, $reportRowsOfMonth, new SplFileInfo($reportFilepath));
+        return $this->excelGenerator->renderToXLSX($dt, $reportRowsOfMonth, new SplFileInfo($reportFilepath));
     }
 }
