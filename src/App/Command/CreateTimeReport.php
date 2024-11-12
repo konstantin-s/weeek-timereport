@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\AppCore;
 use App\Common\ExceptionHandler;
-use App\TimeReport\Report;
+use App\TimeReport\TimeReportGenerator;
 use DateInterval;
 use DateTime;
 use Exception;
@@ -52,10 +52,11 @@ class CreateTimeReport extends Command
             return Command::INVALID;
         }
 
-        $report = AppCore::i()->get(Report::class);
         try {
 
-            $reportFile = $report->buildReport($reportDT);
+            $TimeReportGenerator = AppCore::i()->get(TimeReportGenerator::class);
+
+            $reportFile = $TimeReportGenerator->buildReport($reportDT);
 
             $output->writeln(["Сгенерирован файл отчета:", $reportFile->getPathname()]);
 

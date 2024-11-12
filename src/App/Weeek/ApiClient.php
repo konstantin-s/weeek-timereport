@@ -56,4 +56,26 @@ class ApiClient
 
         return $tasks;
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function getProjects()
+    {
+        $startTime = microtime(true);
+
+        $response = $this->client->request('GET', "https://api.weeek.net/public/v1/tm/projects");
+        $responseArray = $response->toArray();
+        $startTimeApiQSCurl = $response->getInfo('start_time');
+
+        $timeApiQS = number_format((microtime(true) - $startTime), 4, ',', ' ');
+        $timeApiQSCurl = number_format((microtime(true) - $startTimeApiQSCurl), 4, ',', ' ');
+
+        $projects = $responseArray['projects'] ?? [];
+
+        $timeApiQAllS = number_format((microtime(true) - $startTime), 4, ',', ' ');
+        $this->l->info("getProjects Api call: {$timeApiQS}s (CURL: {$timeApiQSCurl}s): all time={$timeApiQAllS}s count=" . count($projects));
+
+        return $projects;
+    }
 }
