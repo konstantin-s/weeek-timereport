@@ -73,7 +73,7 @@ class ReportDataRenderer
         foreach ($reportRowsOfMonth as $lineData) {
             $worksheet->setCellValue("A$rowNumCur", $lineData['project']);
             $worksheet->setCellValue("B$rowNumCur", $lineData['taskTitle']);
-            $worksheet->setCellValue("C$rowNumCur", "=TIME(0,{$lineData['timeMinutes']},0)");
+            $worksheet->setCellValue("C$rowNumCur", "={$lineData['timeMinutes']}/1440");
             $rowNumCur++;
         }
         $rowNumDataEnd = $rowNumCur - 1;
